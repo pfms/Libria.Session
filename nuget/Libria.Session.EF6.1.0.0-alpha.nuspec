@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>Libria.Session.EF6</id>
+        <version>1.0.0-alpha</version>
+        <title>Libria.Session.EF6</title>
+        <authors>Libria</authors>
+        <owners>Libria</owners>
+        <projectUrl>https://github.com/pfms/Libria.Session</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Base Entity Framework 6 implementation to be used with Libria.Session library</description>
+        <tags>Libria UnitOfWork Database session scope</tags>
+        <dependencies>
+            <group targetFramework=".NETFramework4.6">
+                <dependency id="Libria.Session.Repository" version="1.0.0-alpha" />
+                <dependency id="EntityFramework" version="6.1.3" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\src\Libria.Session.EF6\bin\Release\Libria.Session.EF6.dll" target="lib\net46\Libria.Session.EF6.dll" />
+    </files>
+</package>
