@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7E4CCEC6-8E9A-45B5-B127-C389C0FE0B9D}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{374FA58F-39A9-48FF-9AAB-0A91BA72178A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Libria.Session.Autofac</RootNamespace>
-    <AssemblyName>Libria.Session.Autofac</AssemblyName>
+    <RootNamespace>DemoApplication</RootNamespace>
+    <AssemblyName>DemoApplication</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -38,8 +41,20 @@
       <HintPath>..\..\packages\Autofac.Extras.DynamicProxy.4.1.0\lib\net45\Autofac.Extras.DynamicProxy.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Castle.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Castle.Core.3.2.2\lib\net45\Castle.Core.dll</HintPath>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Libria.AmbientContext, Version=1.0.6175.4709, Culture=neutral, processorArchitecture=MSIL">
@@ -47,6 +62,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,23 +73,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interceptors\SessionScopeInterceptor.cs" />
+    <Compile Include="Data\Configurations\MovieMapping.cs" />
+    <Compile Include="Data\Entities\Movie.cs" />
+    <Compile Include="Data\MovieDbContext.cs" />
+    <Compile Include="Data\Repositories\MovieRepository.cs" />
+    <Compile Include="IoC\DataModule.cs" />
+    <Compile Include="IoC\ServiceModule.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SessionConnectionFactory.cs" />
+    <Compile Include="Services\Models\MovieModel.cs" />
+    <Compile Include="Services\MovieService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Libria.Session.Aspects\Libria.Session.Aspects.csproj">
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Libria.Session.Aspects\Libria.Session.Aspects.csproj">
       <Project>{90E3DBD1-AECD-45DA-A6D7-AC8914974970}</Project>
       <Name>Libria.Session.Aspects</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libria.Session\Libria.Session.csproj">
+    <ProjectReference Include="..\..\src\Libria.Session.Autofac\Libria.Session.Autofac.csproj">
+      <Project>{7E4CCEC6-8E9A-45B5-B127-C389C0FE0B9D}</Project>
+      <Name>Libria.Session.Autofac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Libria.Session.EF6\Libria.Session.EF6.csproj">
+      <Project>{2EDB5D75-DF1B-46B4-A29B-A2A8A532341F}</Project>
+      <Name>Libria.Session.EF6</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Libria.Session.Repository\Libria.Session.Repository.csproj">
+      <Project>{C496A902-E423-43C0-B741-2FCBA1EC7219}</Project>
+      <Name>Libria.Session.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Libria.Session\Libria.Session.csproj">
       <Project>{C53B4384-2E4A-4110-B4F0-A60166DD75AB}</Project>
       <Name>Libria.Session</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

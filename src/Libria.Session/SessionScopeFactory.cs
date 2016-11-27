@@ -9,15 +9,15 @@ namespace Libria.Session
 		private readonly ISessionConnectionFactory _factory;
 		private readonly ISessionExceptionHandler _exceptionHandler;
 
-		public SessionScopeFactory(ISessionConnectionFactory factory, ISessionExceptionHandler exceptionHandler)
+		public SessionScopeFactory(ISessionConnectionFactory factory, ISessionExceptionHandler exceptionHandler = null)
 		{
 			_factory = factory;
 			_exceptionHandler = exceptionHandler;
 		}
 
-		public ISessionScope Create(bool readOnly = false, ScopeOption joiningOption = ScopeOption.Required)
+		public ISessionScope Create(bool readOnly = false, ScopeOption joiningOption = ScopeOption.Required, IsolationLevel? isolationLevel = null)
 		{
-			return new SessionScope(readOnly, null, _factory, joiningOption, _exceptionHandler);
+			return new SessionScope(readOnly, isolationLevel, _factory, joiningOption, _exceptionHandler);
 		}
 
 		public ISessionScope CreateWithTransaction(bool readOnly = false,

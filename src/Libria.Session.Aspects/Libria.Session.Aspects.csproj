@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7E4CCEC6-8E9A-45B5-B127-C389C0FE0B9D}</ProjectGuid>
+    <ProjectGuid>{90E3DBD1-AECD-45DA-A6D7-AC8914974970}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Libria.Session.Autofac</RootNamespace>
-    <AssemblyName>Libria.Session.Autofac</AssemblyName>
+    <RootNamespace>Libria.Session.Aspects</RootNamespace>
+    <AssemblyName>Libria.Session.Aspects</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,18 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.2.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autofac.4.2.1\lib\net45\Autofac.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Autofac.Extras.DynamicProxy, Version=4.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autofac.Extras.DynamicProxy.4.1.0\lib\net45\Autofac.Extras.DynamicProxy.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Castle.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Castle.Core.3.2.2\lib\net45\Castle.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Libria.AmbientContext, Version=1.0.6175.4709, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Libria.AmbientContext.1.0.1\lib\net46\Libria.AmbientContext.dll</HintPath>
       <Private>True</Private>
@@ -56,23 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interceptors\SessionScopeInterceptor.cs" />
+    <Compile Include="SessionScopeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SessionConnectionFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Libria.Session.Aspects\Libria.Session.Aspects.csproj">
-      <Project>{90E3DBD1-AECD-45DA-A6D7-AC8914974970}</Project>
-      <Name>Libria.Session.Aspects</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Libria.Session\Libria.Session.csproj">
       <Project>{C53B4384-2E4A-4110-B4F0-A60166DD75AB}</Project>
       <Name>Libria.Session</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

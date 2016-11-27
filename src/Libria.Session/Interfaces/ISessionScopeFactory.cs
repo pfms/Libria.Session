@@ -5,7 +5,7 @@ namespace Libria.Session.Interfaces
 {
 	public interface ISessionScopeFactory
 	{
-		ISessionScope Create(bool readOnly = false, ScopeOption joiningOption = ScopeOption.Required);
+		ISessionScope Create(bool readOnly = false, ScopeOption joiningOption = ScopeOption.Required, IsolationLevel? isolationLevel = null);
 
 		ISessionScope CreateWithTransaction(bool readOnly = false,
 			IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
