@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Diagnostics;
 
 namespace DemoApplication.Data
 {
@@ -8,7 +9,7 @@ namespace DemoApplication.Data
 		public MovieDbContext(string connectionString)
 			: base(connectionString)
 		{
-			
+			Database.Log = c => Debug.WriteLine(c);
 		}
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,10 +15,11 @@ namespace DemoApplication.Data.Repositories
 			: base(sessionConnectionLocator)
 		{
 		}
-
+		
 		public Task<Movie> FindByNameAsync(string name, CancellationToken ct)
 		{
-			return DbSet.FirstOrDefaultAsync(q => q.Name == name, ct);
+			return DbSet
+				.FirstOrDefaultAsync(q => q.Name == name, ct);
 		}
 	}
 }

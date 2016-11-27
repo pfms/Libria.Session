@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libria.Session.EF6.Interfaces;
@@ -11,7 +12,8 @@ namespace Libria.Session.EF6
 	public class EFRepository<TEntity, TDbContext> : BaseRepository<TEntity>, IEFRepository<TEntity> where TEntity : class
 		where TDbContext : DbContext
 	{
-		protected EFRepository(ISessionConnectionLocator sessionConnectionLocator) : base(sessionConnectionLocator)
+		protected EFRepository(ISessionConnectionLocator sessionConnectionLocator)
+			: base(sessionConnectionLocator)
 		{
 		}
 
@@ -59,7 +61,9 @@ namespace Libria.Session.EF6
 			var entry = DbContext.Entry(entity);
 
 			if (entry.State == EntityState.Detached)
+			{
 				DbSet.Attach(entity);
+			}
 
 			if (entry.State != EntityState.Added && entry.State != EntityState.Deleted)
 				entry.State = EntityState.Modified;
@@ -91,7 +95,7 @@ namespace Libria.Session.EF6
 		{
 			return DbSet.FindAsync(ct, keys);
 		}
-
+		
 		protected Task<T> QueryAsync<T>(Func<DbSet<TEntity>, T> query, CancellationToken ct)
 		{
 			return Task.Run(() => query(DbSet), ct);

@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices.WindowsRuntime;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -26,51 +26,48 @@ namespace DemoApplication.Services
 		[SessionScope(ReadOnly = true)]
 		public virtual async Task<MovieModel> FindByNameAsync(string name, CancellationToken ct)
 		{
-			//using (var scope = _scopeFactory.Create(true))
-			{
-				var existingMovie = await _movies.FindByNameAsync(name, ct);
+			var existingMovie = await _movies.FindByNameAsync(name, ct);
 
-				return Mapper.Map<MovieModel>(existingMovie);
-			}
+			return Mapper.Map<MovieModel>(existingMovie);
 		}
 
 		[SessionScope]
 		public virtual async Task<MovieModel> AddAsync(MovieModel movieModel, CancellationToken ct)
 		{
-			//using (var scope = _scopeFactory.Create())
-			{
-				var movie = await _movies.AddAsync(Mapper.Map<Movie>(movieModel), ct);
-				//await scope.SaveChangesAsync(ct);
-				return Mapper.Map<MovieModel>(movie);
-			}
+			var movie = await _movies.AddAsync(Mapper.Map<Movie>(movieModel), ct);
+			return Mapper.Map<MovieModel>(movie);
 		}
 
 		[SessionScope]
 		public virtual async Task<MovieModel> AddOrUpdateAsync(MovieModel movieModel, CancellationToken ct)
 		{
-			//using (var scope = _scopeFactory.Create())
+			var existingModel = await FindByNameAsync(movieModel.Name, ct);
+
+			if (existingModel != null)
 			{
-				var existingModel = await FindByNameAsync(movieModel.Name, ct);
-
-				if (existingModel != null)
-				{
-					return await UpdateAsync(movieModel, ct);
-				}
-
-				//await scope.SaveChangesAsync(ct);
-				return await AddAsync(movieModel, ct);
+				existingModel.UpdatedOn = movieModel.UpdatedOn;
+				movieModel = await UpdateAsync(existingModel, ct);
 			}
+			else
+			{
+				movieModel = await AddAsync(movieModel, ct);
+			}
+
+			return movieModel;
 		}
 
 		[SessionScope]
 		public virtual async Task<MovieModel> UpdateAsync(MovieModel movieModel, CancellationToken ct)
 		{
-			//using (var scope = _scopeFactory.Create())
-			{
-				var movie = await _movies.UpdateAsync(Mapper.Map<Movie>(movieModel), ct);
-				//await scope.SaveChangesAsync(ct);
-				return Mapper.Map<MovieModel>(movie);
-			}
+			var existingMovie = await _movies.GetAsync(ct, movieModel.Id);
+			if (existingMovie == null) throw new ArgumentNullException(nameof(existingMovie));
+
+			existingMovie.Name = movieModel.Name;
+			existingMovie.ImdbUrl = movieModel.ImdbUrl;
+			existingMovie.UpdatedOn = movieModel.UpdatedOn;
+
+			var movie = await _movies.UpdateAsync(existingMovie, ct);
+			return Mapper.Map<MovieModel>(movie);
 		}
 	}
 }

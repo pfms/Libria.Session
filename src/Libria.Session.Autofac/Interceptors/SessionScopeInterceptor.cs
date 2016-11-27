@@ -30,7 +30,7 @@ namespace Libria.Session.Autofac.Interceptors
 				{
 					var ctArgument = invocation.Arguments.FirstOrDefault(a => a is CancellationToken);
 
-					var cancellationToken = ctArgument != null ? (CancellationToken) ctArgument : CancellationToken.None;
+					var cancellationToken = (CancellationToken?)ctArgument ?? CancellationToken.None;
 
 					var scope = _scopeFactory
 						.Create(sessionScopeAttribute.ReadOnly, sessionScopeAttribute.Option,
@@ -38,7 +38,12 @@ namespace Libria.Session.Autofac.Interceptors
 
 					invocation.Proceed();
 
-					invocation.ReturnValue = InterceptAsync((dynamic) invocation.ReturnValue, scope, cancellationToken);
+					var task = (Task) invocation.ReturnValue;
+
+					// Wait for the task to finish.
+					task.Wait(cancellationToken);
+					scope.SaveChanges();
+					scope.Dispose();
 				}
 				else
 				{
@@ -55,23 +60,6 @@ namespace Libria.Session.Autofac.Interceptors
 			{
 				invocation.Proceed();
 			}
-		}
-
-		private static async Task InterceptAsync(Task task, ISessionScope scope, CancellationToken ct)
-		{
-			await task.ConfigureAwait(false);
-			await scope.SaveChangesAsync(ct);
-			scope.Dispose();
-		}
-
-		private static async Task<T> InterceptAsync<T>(Task<T> task, ISessionScope scope, CancellationToken ct)
-		{
-			var result = await task.ConfigureAwait(false);
-			scope.SaveChanges();
-			
-			scope.Dispose();
-
-			return result;
 		}
 	}
 }

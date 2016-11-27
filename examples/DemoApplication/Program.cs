@@ -55,8 +55,8 @@ namespace DemoApplication
 				UpdatedOn = DateTimeOffset.Now
 			};
 
-			//movie = await _movieService.FindByNameAsync(movie.Name, ct);
 			movie = await _movieService.AddOrUpdateAsync(movie, ct);
+			Console.WriteLine(movie.UpdatedOn);
 		}
 	}
 }

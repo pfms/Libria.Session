@@ -58,8 +58,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Libria.AmbientContext, Version=1.0.6175.4709, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Libria.AmbientContext.1.0.1\lib\net46\Libria.AmbientContext.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
