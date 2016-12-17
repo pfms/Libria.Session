@@ -52,7 +52,6 @@
     <Compile Include="DbContextSessionConnection.cs" />
     <Compile Include="EFRepository.cs" />
     <Compile Include="Interfaces\IDbContextSessionConnection.cs" />
-    <Compile Include="Interfaces\IEFRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

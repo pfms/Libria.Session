@@ -40,10 +40,6 @@ namespace DemoApplication.IoC
 			builder.RegisterType<SessionConnectionFactory>()
 				.AsImplementedInterfaces()
 				.SingleInstance();
-
-			builder.RegisterType<DefaultSessionExceptionHandler>()
-				.AsImplementedInterfaces()
-				.SingleInstance();
 		}
 	}
 }

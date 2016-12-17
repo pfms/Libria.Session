@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Data.Entity;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Libria.Session.EF6.Interfaces;
 using Libria.Session.Interfaces;
 using Libria.Session.Repository;
 
 namespace Libria.Session.EF6
 {
-	public class EFRepository<TEntity, TDbContext> : BaseRepository<TEntity>, IEFRepository<TEntity> where TEntity : class
+	public class EFRepository<TEntity, TDbContext> : BaseRepository<TEntity> where TEntity : class
 		where TDbContext : DbContext
 	{
 		protected EFRepository(ISessionConnectionLocator sessionConnectionLocator)
@@ -78,27 +76,43 @@ namespace Libria.Session.EF6
 
 		public override Task<TEntity> AddAsync(TEntity entity, CancellationToken ct)
 		{
-			return Task.Run(() => Add(entity), ct);
+			ct.ThrowIfCancellationRequested();
+
+			return Task.FromResult(Add(entity));
 		}
 
 		public override Task<TEntity> RemoveAsync(TEntity entity, CancellationToken ct)
 		{
-			return Task.Run(() => Remove(entity), ct);
+			ct.ThrowIfCancellationRequested();
+
+			return Task.FromResult(Remove(entity));
 		}
 
 		public override Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ct)
 		{
-			return Task.Run(() => Update(entity), ct);
+			ct.ThrowIfCancellationRequested();
+
+			return Task.FromResult(Update(entity));
 		}
 
 		public override Task<TEntity> GetAsync(CancellationToken ct, params object[] keys)
 		{
 			return DbSet.FindAsync(ct, keys);
 		}
-		
+
 		protected Task<T> QueryAsync<T>(Func<DbSet<TEntity>, T> query, CancellationToken ct)
 		{
-			return Task.Run(() => query(DbSet), ct);
+			ct.ThrowIfCancellationRequested();
+
+			return Task.FromResult(query(DbSet));
+		}
+
+		protected async Task<T> QueryAsync<T>(Func<DbSet<TEntity>, CancellationToken, Task<T>> query, CancellationToken ct)
+		{
+			ct.ThrowIfCancellationRequested();
+
+			var result = await query(DbSet, ct);
+			return result;
 		}
 	}
 }

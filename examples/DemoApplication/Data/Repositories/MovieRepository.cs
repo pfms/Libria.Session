@@ -21,5 +21,10 @@ namespace DemoApplication.Data.Repositories
 			return DbSet
 				.FirstOrDefaultAsync(q => q.Name == name, ct);
 		}
+
+		public Task<bool> ExistsAsync(string name, CancellationToken ct)
+		{
+			return QueryAsync((d, c) => d.AnyAsync(p => p.Name == name, c), ct);
+		}
 	}
 }

@@ -17,7 +17,7 @@ namespace Libria.Session.Autofac.Interceptors
 			_scopeFactory = scopeFactory;
 		}
 
-		public async void Intercept(IInvocation invocation)
+		public void Intercept(IInvocation invocation)
 		{
 			var sessionScopeAttribute = invocation.MethodInvocationTarget
 				.GetCustomAttributes(typeof (SessionScopeAttribute), true)

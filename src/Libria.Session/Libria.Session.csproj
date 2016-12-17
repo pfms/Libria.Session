@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultSessionExceptionHandler.cs" />
     <Compile Include="Interfaces\ISessionConnection.cs" />
     <Compile Include="Interfaces\ISessionConnectionFactory.cs" />
     <Compile Include="Interfaces\ISessionConnectionLocator.cs" />
